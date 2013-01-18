@@ -1,0 +1,41 @@
+
+:time:
+  :late: 
+    - "I'm up! I'm up becasue I have to run!!!!"
+    - "test"
+  :afternoon: 
+    - "Why am I up this early? The sun is still up?"
+  :morning: 
+    - "Either I just woke up from a drunken sleep or I am waking up too early."
+    - "I was running in my sleep."
+
+:duration:
+  :long:
+  # More than 15 mins.
+    - "1"
+  :medium_long:
+  # Between 15 and 10 mins.
+    - "2"
+  :medium:
+  # Between 10 and 5 mins.
+    - "3"
+  :short:
+  # under 5 min. 
+    - "5"
+
+:distance:
+  :long:
+    - "I just ran DISTANCE miles. Lance Armstrong has nothing on me...well before the drug thing."
+  :medium:
+    - "Only DISTANCE tonight. It's just enough to maintain my current weight."
+  :short: 
+    - "Ugg. I don't want to run right now."
+
+:speed:
+  :fast: 
+    - "Can you catch me? Nobody can catch me: SPEED MPH bitches!"
+    - "Did you see me? I ran so fast that you couldn't see me."
+  :medium:
+    - "Taking it easy tonight. Only SPEED MPH tonight"
+  :slow: 
+    - "Potato chips and a couch for me tonight."
