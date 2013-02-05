@@ -3,6 +3,7 @@ require 'yaml'
 
 module TweetWheel
   class Tweet
+    
     def initialize
       @client = Twitter::Client.new(
         :consumer_key => "sUySqvvF4xQF7F0vadx1g2uA",
@@ -14,6 +15,10 @@ module TweetWheel
     end
 
     def generate_tweet params
+      # Takes the parameters from the last session, and creates an 
+      # array of possible tweets that is chosen at random, then
+      # sends the tweet.
+
       current_time  = params[:current_time]
       duration      = params[:duration]
       speed         = params[:speed]
@@ -21,48 +26,17 @@ module TweetWheel
 
       random_tweet = []
 
-      #  === Time of day ===
-      if night?(current_time)
-        random_tweet << @tweets[:time][:late].sample
-      
-      elsif afternoon?(current_time)
-        random_tweet << @tweets[:time][:afternoon].sample
-      
-      elsif morning?(current_time)
-        random_tweet << @tweets[:time][:morning].sample
-      end
+      # Time of day
+      random_tweet << check_time(current_time)
 
-      # === Duration ===
-      if duration >= 15
-       random_tweet << @tweets[:duration][:long].sample
-      
-      elsif duration < 15 && duration >= 10
-       random_tweet << @tweets[:duration][:medium_long].sample
-      
-      elsif duration < 10 && duration >= 5
-        random_tweet << @tweets[:duration][:medium].sample
-      
-      else
-       random_tweet << @tweets[:duration][:short].sample
-      end
+      # Duration
+      random_tweet << check_duration(duration)
 
-      # === Speed ===
-      if speed >= 15 
-        random_tweet << @tweets[:speed][:fast].sample
-      elsif speed < 15 && speed >= 5
-        random_tweet << @tweets[:speed][:medium].sample
-      else
-        random_tweet << @tweets[:speed][:slow].sample
-      end
+      # Speed
+      random_tweet << check_speed(speed)
 
-      # === Distance ===
-      if distance >= 500
-        random_tweet << @tweets[:distance][:long].sample
-      elsif distance < 500 && distance >= 300 
-        random_tweet << @tweets[:distance][:medium].sample
-      else
-        random_tweet << @tweets[:distance][:short].sample
-      end 
+      # Distance
+      random_tweet << check_distance(distance)
 
       tweet = random_tweet.sample
       subbed_tweet = subber({ tweet: tweet,
@@ -74,13 +48,64 @@ module TweetWheel
       puts subbed_tweet
     end
 
-    private 
+    private
+
+    def check_time current_time
+      if night?(current_time)
+        @tweets[:time][:late].sample
+      
+      elsif afternoon?(current_time)
+        @tweets[:time][:afternoon].sample
+      
+      elsif morning?(current_time)
+        @tweets[:time][:morning].sample
+      end
+    end 
+
+    def check_duration duration
+      if duration >= 15
+        @tweets[:duration][:long].sample
+      
+      elsif duration < 15 && duration >= 10
+        @tweets[:duration][:medium_long].sample
+      
+      elsif duration < 10 && duration >= 5
+        @tweets[:duration][:medium].sample
+      
+      else
+        @tweets[:duration][:short].sample
+      end
+    end
+
+    def check_speed speed
+      if speed >= 15 
+        @tweets[:speed][:fast].sample
+      
+      elsif speed < 15 && speed >= 5
+        @tweets[:speed][:medium].sample
+      
+      else
+        @tweets[:speed][:slow].sample
+      end
+    end
+
+    def check_distance distance
+      if distance >= 500
+        @tweets[:distance][:long].sample
+     
+      elsif distance < 500 && distance >= 300 
+        @tweets[:distance][:medium].sample
+      
+      else
+        @tweets[:distance][:short].sample
+      end
+    end
 
     def subber params
-      tweet         = params[:tweet]
-      duration      = params[:duration]
-      speed         = params[:speed]
-      distance      = params[:distance]
+      tweet     = params[:tweet]
+      duration  = params[:duration]
+      speed     = params[:speed]
+      distance  = params[:distance]
 
       params.each do |key, value|
         if tweet.include?(key.to_s.upcase)

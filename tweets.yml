@@ -1,18 +1,28 @@
-
 :time:
-  :late: 
-    - "I'm up! I'm up becasue I have to run!!!!"
-    - "test"
-  :afternoon: 
+  :late:
+    - "Time to get up and start the nightly routine."
+    - "Time for the first run of the day. I think I'll take it easy tonight."
+    - "Running around, and around, and around..."
+    - "...and around, and around, and around..."
+    - "I gotta run, I gotta, I GOTTA RUNN!!"
+  :afternoon:
     - "Why am I up this early? The sun is still up?"
-  :morning: 
-    - "Either I just woke up from a drunken sleep or I am waking up too early."
+    - "Is everybody at work? I can't see anyone through the cage."
+    - "Do you ever wonder if the world is bigger than what you can see?"
+    - "One of these days, I'm breaking out of this place."
+    - "Don't tell anyone, but I'm planning an escape."
+    - "I has a carrot http://bit.ly/V2azho"
+  :morning:
+    - "Either I just woke up from a drunken sleep or I'm waking up too early."
     - "I was running in my sleep."
+    - "I hate it when the urge to pee wakes you up in the morning."
+    - "mmm...I love water."
+    - "Hunger pains."
 
 :duration:
   :long:
   # More than 15 mins.
-    - "1"
+    - "I was hoping that I could turn back time if I turned this wheel long enough."
   :medium_long:
   # Between 15 and 10 mins.
     - "2"
@@ -26,16 +36,32 @@
 :distance:
   :long:
     - "I just ran DISTANCE miles. Lance Armstrong has nothing on me...well before the drug thing."
+    - "DISTANCE miles = a long cardio workout."
+    - "Meditating while running: Only (1000000000 - DISTANCE) miles until I reach nirvana!"
+    - "If I run long enough, maybe I can get somewhere at some point?"
+    - "GQ told me to prepare for the NYC City marathon (to be fair if I was human size I did run DISTANCE x 30)"
+    - "Skinnying up... Maybe I can fit through the bars, if I keep at it long enough"
   :medium:
     - "Only DISTANCE tonight. It's just enough to maintain my current weight."
+    - "I am on a diet. Eat half, exercise half."
+    - "I think I can cheat the system be napping on the exercise machine."
+    - "Too hot, too sweaty, need to shave my legs for aergonomics"
+    - "And I am off, thats enough to pretend I like my exercise machine"
   :short: 
     - "Ugg. I don't want to run right now."
+    - "Not wearing my walking pants today."
+    - "Oh nope. My back - bad idea."
+    - "Wait did I hear dinner?"
+    - "Oops, forgot my prior engagements!"
+    - "I shouldn't have eaten that extra carrot"
+    - "Uhm, I did a whole day of house cleaning, what do you expect?"
 
 :speed:
   :fast: 
     - "Can you catch me? Nobody can catch me: SPEED MPH bitches!"
-    - "Did you see me? I ran so fast that you couldn't see me."
+    - "Did you see me? I ran so fast that I was a blur!"
   :medium:
     - "Taking it easy tonight. Only SPEED MPH tonight"
+    - "My legs are still sore from my last run."
   :slow: 
     - "Potato chips and a couch for me tonight."
