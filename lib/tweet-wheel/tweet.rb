@@ -1,7 +1,18 @@
+# Tweet Wheel : A tool for hamster tweeting
+#
+# Copyright (c) 2013 Justin Leavitt jusleavitt@gmail.com
+#
+# This program is free software
+
+
 require 'twitter' # https://github.com/sferik/twitter
 require 'yaml'
 
 module TweetWheel
+
+  # The TweetWheel::Tweet class holds all the methods used to generate a
+  # tweet based on the wheel's activity.
+  
   class Tweet
     
     def initialize
@@ -14,11 +25,7 @@ module TweetWheel
       @tweets = YAML.load_file("tweets.yml")
     end
 
-    def generate_tweet params
-      # Takes the parameters from the last session, and creates an 
-      # array of possible tweets that is chosen at random, then
-      # sends the tweet.
-
+    def send_tweet params
       current_time  = params[:current_time]
       duration      = params[:duration]
       speed         = params[:speed]
@@ -32,20 +39,21 @@ module TweetWheel
       # Duration
       random_tweet << check_duration(duration)
 
-      # Speed
-      random_tweet << check_speed(speed)
-
       # Distance
       random_tweet << check_distance(distance)
 
+      # Speed
+      random_tweet << check_speed(speed)
+
       tweet = random_tweet.sample
-      subbed_tweet = subber({ tweet: tweet,
-                              duration: duration,
-                              speed: speed,
-                              distance: distance
-                            })
-      #@client.update(subbed_tweet)
-      puts subbed_tweet
+      formatted_tweet = subber({ tweet: tweet,
+                                 duration: duration,
+                                 speed: speed,
+                                 distance: distance
+                                })
+      
+      @client.update(formatted_tweet)
+      puts formatted_tweet
     end
 
     private
@@ -78,10 +86,10 @@ module TweetWheel
     end
 
     def check_speed speed
-      if speed >= 15 
+      if speed >= 20 
         @tweets[:speed][:fast].sample
       
-      elsif speed < 15 && speed >= 5
+      elsif speed < 20 && speed >= 10
         @tweets[:speed][:medium].sample
       
       else
@@ -90,10 +98,10 @@ module TweetWheel
     end
 
     def check_distance distance
-      if distance >= 500
+      if distance >= 3
         @tweets[:distance][:long].sample
      
-      elsif distance < 500 && distance >= 300 
+      elsif distance < 2 && distance >= 1 
         @tweets[:distance][:medium].sample
       
       else

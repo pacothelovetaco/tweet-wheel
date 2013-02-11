@@ -1,24 +1,30 @@
+# Tweet Wheel : A tool for hamster tweeting
+#
+# Copyright (c) 2013 Justin Leavitt jusleavitt@gmail.com
+#
+# This program is free software
+
 require "tweet-wheel/version"
 require "tweet-wheel/tweet"
+require 'logger'
 require 'dino' # https://github.com/austinbv/dino
-
-=begin
- 
- Tweet Wheel
-
- This program is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
-=end
   
-HIGH            = '1023'    # Reed HIGH variable
-LOW             = '000'     # Reed LOW variable
-MAX_REED_COUNT  = 150       # Max counts before timeout
-CIRCUMFERENCE   = 34.54     # in inches
-MAX_WAIT_TIME   = 10        # in seconds
+# 
+# Initialization of the Arduino Board and general settings
+#
 
+HIGH            = '1023'    # Reed HIGH value
+LOW             = '000'     # Reed LOW value
+MAX_REED_COUNT  = 150       # Max counts before timeout
+CIRCUMFERENCE   = 34.54     # Circumference of the wheel in inches
+
+# The max time to wait in seconds before sending
+# a tweet. This number should be tweaked based on the
+# hamster's activity. Sometimes, they like to take long
+# breaks while running.
+MAX_WAIT_TIME   = 600
+
+# Initializing basic operating settings.
 @reed_counter   = MAX_REED_COUNT
 @old_time       = 0
 @distance       = 0
@@ -26,78 +32,48 @@ MAX_WAIT_TIME   = 10        # in seconds
 @tweet_sent     = true
 @timer          = Time.now
 
+# Important Arduino variables. The sensor is mapped to port A0.
 board           = Dino::Board.new(Dino::TxRx.new)
 sensor          = Dino::Components::Sensor.new(pin: 'A0', board: board)
 
-def tweet
-  @tweet ||= TweetWheel::Tweet.new
-end
+# Set up wheel.log
+@logger = Logger.new('wheel.log', 'weekly')
 
-puts "+---------------------------------------+"
-puts "|       Loading Chauncey's Wheel        |"
-puts "+---------------------------------------+"
 
+# Let's print an awesome welcome message
+puts "+---------------------------------------+"
+puts "|      Chauncey's Wheel is running      |"
+puts "+---------------------------------------+"
+@logger.info "Chauncey's Wheel loaded"
 
 # 
-# Arduino Main Logic
+# The Arduino loop and main logic
 #
 
-# def execute_high
-#   @elapsed_time = Time.now - @old_time
-  
-#   mph = ((CIRCUMFERENCE * 3600000) / 5280) / (@elapsed_time * 1000)
-#   @array_of_mph << mph.round
-  
-#   @reed_counter = MAX_REED_COUNT
-#   @distance += CIRCUMFERENCE
-  
-#   @timer = Time.now 
-#   @tweet_sent = false
-
-#   puts "#{mph.round} MPH, rotation: #{@elapsed_time}s"
-# end
-
-def end_session
-  @array_of_mph.shift       # Becasue the first one is always bloated
-  
-  avg_mph = @array_of_mph.inject{|sum,x| sum + x }
-  avg_mph = (avg_mph / @array_of_mph.count).round
-
-  final_distance = (@distance / 63360).round
-
-  duration = ((Time.now - @timer) / 60)).round
-
-  puts "#{avg_mph}, #{final_distance}, #{duration}"
-  puts "fire off tweet"
-  @tweet_sent = true
-
-  tweet.generate_tweet({current_time: Time.now, 
-                  duration: duration, 
-                  speed: avg_mph, 
-                  distance: final_distance 
-                  })
-  
-  # Reset data
-  @distance = 0
-  @array_of_mph = []
-end
-
-
 on_data = Proc.new do |data|
+# The on_data Proc monitors the reed state and
+# reacts according to the signal state. When the two
+# connectors make contact, the reed is in a HIGH state.
+# When the connectors are apart, the reed is in a LOW state.
+#
+# When @reed_counter hits 0 and the MAX_WAIT_TIME is reached,
+# the end_wheel_session method executes the tweet.
+  
   if data == HIGH
     if @reed_counter == 0
       @elapsed_time = Time.now - @old_time
   
       mph = ((CIRCUMFERENCE * 3600000) / 5280) / (@elapsed_time * 1000)
-      @array_of_mph << mph.round
+      @array_of_mph << mph.round unless mph.round > 50
   
       @reed_counter = MAX_REED_COUNT
       @distance += CIRCUMFERENCE
   
-      @timer = Time.now 
+      @timer = Time.now if @tweet_sent
       @tweet_sent = false
 
-      puts "#{mph.round} MPH, rotation: #{@elapsed_time}s"
+      @logger.info "#{mph.round} MPH, rotation: #{@elapsed_time}s"
+      puts "#{mph.round} MPH, rotation: #{@elapsed_time}s, distance: #{@distance}"
     else
       if @reed_counter > 0
         @reed_counter -= 1
@@ -113,11 +89,64 @@ on_data = Proc.new do |data|
   end
 
   if (Time.now - @timer) > MAX_WAIT_TIME && !@tweet_sent
-    end_session 
+    end_wheel_session 
   end
 
   # Uncomment to see data activity from sensor
   # puts "#{data}"
+end
+
+def end_wheel_session
+  # When the MAX_WAIT_TIME has been reached, then the current session
+  # is over. This method parses the stats for the session,
+  # then passes the stats to Tweet.send_tweet.
+
+  
+  # Becasue the first MPH is only used to begin calculations,
+  # it's always inaccurate and should not be used.
+  @array_of_mph.shift
+  
+  # Calculate the average MPH
+  avg_mph = @array_of_mph.inject{|sum,x| sum + x }
+  avg_mph = (avg_mph / @array_of_mph.count).round
+
+  # Calculate the final distance in miles
+  final_distance = (@distance / 63360).round
+
+  # Of course, record the total duration
+  duration = ((Time.now - @timer) / 60).round
+
+  @logger.info "Session ended"
+  @logger.info "AVG MPH: #{avg_mph}, DISTANCE: #{final_distance}, DURATION: #{duration}"
+
+  puts "AVG MPH: #{avg_mph}, DISTANCE: #{final_distance}, DURATION: #{duration}"
+  
+  # Flag that tweet was sent to stop subsequent tweet sends.
+  @tweet_sent = true
+
+  begin 
+    tweet.send_tweet({ current_time: Time.now, 
+                       duration: duration, 
+                       speed: avg_mph, 
+                       distance: final_distance 
+                      })
+
+    @logger.info "Tweet sent!"
+    puts "Tweet sent!"
+  
+  rescue Exception => msg
+    @logger.warn "Tweet failed | #{msg}"
+    puts "Tweet failed | #{msg}"
+  end
+  
+  # Reset data, ready for another session.
+  @distance = 0
+  @array_of_mph = []
+end
+
+
+def tweet
+  @tweet ||= TweetWheel::Tweet.new
 end
 
 sensor.when_data_received(on_data)

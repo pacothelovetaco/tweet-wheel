@@ -5,6 +5,9 @@
     - "Running around, and around, and around..."
     - "...and around, and around, and around..."
     - "I gotta run, I gotta, I GOTTA RUNN!!"
+    - "I MUST exercise."
+    - "I smell something."
+    - "I wish I had some popcorn http://bit.ly/4YDM5"
   :afternoon:
     - "Why am I up this early? The sun is still up?"
     - "Is everybody at work? I can't see anyone through the cage."
@@ -12,41 +15,52 @@
     - "One of these days, I'm breaking out of this place."
     - "Don't tell anyone, but I'm planning an escape."
     - "I has a carrot http://bit.ly/V2azho"
+    - "Hmmm...everyone must be at work, I don't see anybody"
   :morning:
     - "Either I just woke up from a drunken sleep or I'm waking up too early."
     - "I was running in my sleep."
     - "I hate it when the urge to pee wakes you up in the morning."
     - "mmm...I love water."
     - "Hunger pains."
+    - "Gosh, my owners are so noisy"
 
 :duration:
   :long:
   # More than 15 mins.
     - "I was hoping that I could turn back time if I turned this wheel long enough."
+    - "I just finished a DURATION min workout."
+    - "I just finished a DURATION min workout, and you didn't"
+    - "Ya, a DURATION min workout. I can't resist treats."
   :medium_long:
   # Between 15 and 10 mins.
-    - "2"
+    - "You try running in a circle for DURATION mins and tell me how you feel."
+    - "I just finished a DURATION min workout."
+    - "I can see everyone."
+    - "The more treats they give me, the longer I have to run."
   :medium:
   # Between 10 and 5 mins.
-    - "3"
+    - "I just finished a DURATION min workout."
+    - "You know, I have to stare at those guys on the couch while I run. I run, they sit."
   :short:
   # under 5 min. 
-    - "5"
+    - "I just finished a DURATION min workout."
 
 :distance:
   :long:
     - "I just ran DISTANCE miles. Lance Armstrong has nothing on me...well before the drug thing."
     - "DISTANCE miles = a long cardio workout."
-    - "Meditating while running: Only (1000000000 - DISTANCE) miles until I reach nirvana!"
+    - "Meditating while running: Only DISTANCE miles less until I reach nirvana!"
     - "If I run long enough, maybe I can get somewhere at some point?"
     - "GQ told me to prepare for the NYC City marathon (to be fair if I was human size I did run DISTANCE x 30)"
-    - "Skinnying up... Maybe I can fit through the bars, if I keep at it long enough"
+    - "Skinnying up... Maybe I can fit through the bars if I keep at it long enough"
+    - "I just finished running DISTANCE miles!"
   :medium:
     - "Only DISTANCE tonight. It's just enough to maintain my current weight."
     - "I am on a diet. Eat half, exercise half."
     - "I think I can cheat the system be napping on the exercise machine."
-    - "Too hot, too sweaty, need to shave my legs for aergonomics"
+    - "Too hot, too sweaty, need to shave my legs for ergonomics"
     - "And I am off, thats enough to pretend I like my exercise machine"
+    - "I just finished running DISTANCE miles!"
   :short: 
     - "Ugg. I don't want to run right now."
     - "Not wearing my walking pants today."
@@ -55,13 +69,18 @@
     - "Oops, forgot my prior engagements!"
     - "I shouldn't have eaten that extra carrot"
     - "Uhm, I did a whole day of house cleaning, what do you expect?"
+    - "I just finished running DISTANCE miles!"
 
 :speed:
   :fast: 
-    - "Can you catch me? Nobody can catch me: SPEED MPH bitches!"
+    - "Can you catch me? Nobody can catch me: SPEED MPH"
     - "Did you see me? I ran so fast that I was a blur!"
+    - "I just had a SPEED MPH run"
   :medium:
     - "Taking it easy tonight. Only SPEED MPH tonight"
     - "My legs are still sore from my last run."
+    - "I just had a SPEED MPH run"
   :slow: 
-    - "Potato chips and a couch for me tonight."
+    - "A carrot and a couch for me tonight."
+    - "I shouldn't have eaten that extra cheese treat."
+    - "I just had a SPEED MPH run"
