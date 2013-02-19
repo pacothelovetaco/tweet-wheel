@@ -17,7 +17,7 @@ module TweetWheel
     
     def initialize
       @client = Twitter::Client.new(
-        :consumer_key => "sUySqvvF4xQF7F0vadx1g2uA",
+        :consumer_key => "sUySqvvF4xQF7F0vx1g2uA",
         :consumer_secret => "lf6wJGz9da1BXPuLCxT3st5TqcN25jSNaG7cglq9Q",
         :oauth_token => "1067037691-qc4cf7zJwsEGQ0qaRhmyvioE50Hf9Kp6MBmIDxz",
         :oauth_token_secret => "ldHzdF7tFA0eSiAVfVWAgQ2fswjMU2j76LHkgMYFPuU"
@@ -61,51 +61,45 @@ module TweetWheel
     def check_time current_time
       if night?(current_time)
         @tweets[:time][:late].sample
-      
       elsif afternoon?(current_time)
         @tweets[:time][:afternoon].sample
-      
       elsif morning?(current_time)
         @tweets[:time][:morning].sample
       end
     end 
 
     def check_duration duration
-      if duration >= 15
-        @tweets[:duration][:long].sample
-      
-      elsif duration < 15 && duration >= 10
-        @tweets[:duration][:medium_long].sample
-      
-      elsif duration < 10 && duration >= 5
-        @tweets[:duration][:medium].sample
-      
-      else
-        @tweets[:duration][:short].sample
+      case duration
+        when 5...9
+          @tweets[:duration][:medium].sample
+        when 10..14
+          @tweets[:duration][:medium_long].sample
+        when 15..60
+          @tweets[:duration][:long].sample
+        else 
+          @tweets[:duration][:short].sample
       end
     end
 
     def check_speed speed
-      if speed >= 20 
-        @tweets[:speed][:fast].sample
-      
-      elsif speed < 20 && speed >= 10
-        @tweets[:speed][:medium].sample
-      
-      else
-        @tweets[:speed][:slow].sample
+      case speed
+        when 19..10
+          @tweets[:speed][:medium].sample
+        when 20..50 
+          @tweets[:speed][:fast].sample
+        else
+          @tweets[:speed][:slow].sample
       end
     end
 
     def check_distance distance
-      if distance >= 3
-        @tweets[:distance][:long].sample
-     
-      elsif distance < 2 && distance >= 1 
-        @tweets[:distance][:medium].sample
-      
-      else
-        @tweets[:distance][:short].sample
+      case distance
+        when 2..1 
+          @tweets[:distance][:medium].sample
+        when 3..5
+          @tweets[:distance][:long].sample
+        else
+          @tweets[:distance][:short].sample
       end
     end
 
@@ -124,11 +118,11 @@ module TweetWheel
     end
 
     def night? date
-      !("06:00"..."23:59").include?(date.strftime("%H:%M"))
+      !("18:00"..."23:59").include?(date.strftime("%H:%M"))
     end
 
     def afternoon? date
-      !("12:00"..."5:59").include?(date.strftime("%H:%M"))
+      !("12:00"..."17:59").include?(date.strftime("%H:%M"))
     end
 
     def morning? date

@@ -22,7 +22,7 @@ CIRCUMFERENCE   = 34.54     # Circumference of the wheel in inches
 # a tweet. This number should be tweaked based on the
 # hamster's activity. Sometimes, they like to take long
 # breaks while running.
-MAX_WAIT_TIME   = 600
+MAX_WAIT_TIME   = 1800
 
 # Initializing basic operating settings.
 @reed_counter   = MAX_REED_COUNT
@@ -37,7 +37,8 @@ board           = Dino::Board.new(Dino::TxRx.new)
 sensor          = Dino::Components::Sensor.new(pin: 'A0', board: board)
 
 # Set up wheel.log
-@logger = Logger.new('wheel.log', 'weekly')
+file = File.open('wheel.log', File::WRONLY | File::APPEND | File::CREAT)
+@logger = Logger.new(file, 'weekly')
 
 
 # Let's print an awesome welcome message
