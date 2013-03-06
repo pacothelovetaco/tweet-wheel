@@ -18,27 +18,24 @@ LOW             = '000'     # Reed LOW value
 MAX_REED_COUNT  = 150       # Max counts before timeout
 CIRCUMFERENCE   = 34.54     # Circumference of the wheel in inches
 
-# The max time to wait in seconds before sending
-# a tweet. This number should be tweaked based on the
-# hamster's activity. Sometimes, they like to take long
-# breaks while running.
-MAX_WAIT_TIME   = 1800
+# Remember, the little critter likes to take breaks. Adjust this
+# amount in order to get a full wheel session. 
+MAX_WAIT_TIME   = 7200 
 
 # Initializing basic operating settings.
 @reed_counter   = MAX_REED_COUNT
-@old_time       = 0
+@reed_timer     = 0
 @distance       = 0
 @array_of_mph   = []
 @tweet_sent     = true
-@timer          = Time.now
+@start_time     = Time.now
 
 # Important Arduino variables. The sensor is mapped to port A0.
 board           = Dino::Board.new(Dino::TxRx.new)
 sensor          = Dino::Components::Sensor.new(pin: 'A0', board: board)
 
 # Set up wheel.log
-file = File.open('wheel.log', File::WRONLY | File::APPEND | File::CREAT)
-@logger = Logger.new(file, 'weekly')
+@logger = Logger.new("wheel.log")
 
 
 # Let's print an awesome welcome message
@@ -62,25 +59,26 @@ on_data = Proc.new do |data|
   
   if data == HIGH
     if @reed_counter == 0
-      @elapsed_time = Time.now - @old_time
+      @elapsed_time = Time.now - @reed_timer
   
-      mph = ((CIRCUMFERENCE * 3600000) / 5280) / (@elapsed_time * 1000)
+      # mph = ((CIRCUMFERENCE * 3600000) / 5280) / (@elapsed_time * 1000)
+      mph = ((CIRCUMFERENCE / 12) / 5280) / (@elapsed_time / 3600)
       @array_of_mph << mph.round unless mph.round > 50
   
       @reed_counter = MAX_REED_COUNT
       @distance += CIRCUMFERENCE
   
-      @timer = Time.now if @tweet_sent
+      @start_time = Time.now if @tweet_sent
       @tweet_sent = false
 
-      @logger.info "#{mph.round} MPH, rotation: #{@elapsed_time}s"
+      @logger.info "#{mph.round} MPH, rotation: #{@elapsed_time}s, distance: #{@distance}"
       puts "#{mph.round} MPH, rotation: #{@elapsed_time}s, distance: #{@distance}"
     else
       if @reed_counter > 0
         @reed_counter -= 1
       end
     end
-    @old_time = Time.now
+    @reed_timer = Time.now
   end
   
   if data == LOW
@@ -89,7 +87,7 @@ on_data = Proc.new do |data|
     end
   end
 
-  if (Time.now - @timer) > MAX_WAIT_TIME && !@tweet_sent
+  if (Time.now - @start_time) > MAX_WAIT_TIME && !@tweet_sent
     end_wheel_session 
   end
 
@@ -100,11 +98,11 @@ end
 def end_wheel_session
   # When the MAX_WAIT_TIME has been reached, then the current session
   # is over. This method parses the stats for the session,
-  # then passes the stats to Tweet.send_tweet.
+  # then passes the stats to Tweet::send_tweet.
 
   
   # Becasue the first MPH is only used to begin calculations,
-  # it's always inaccurate and should not be used.
+  # it's always inaccurate and shouldn't be used.
   @array_of_mph.shift
   
   # Calculate the average MPH
@@ -115,7 +113,7 @@ def end_wheel_session
   final_distance = (@distance / 63360).round
 
   # Of course, record the total duration
-  duration = ((Time.now - @timer) / 60).round
+  duration = ((Time.now - @start_time) / 60).round
 
   @logger.info "Session ended"
   @logger.info "AVG MPH: #{avg_mph}, DISTANCE: #{final_distance}, DURATION: #{duration}"

@@ -83,9 +83,9 @@ module TweetWheel
 
     def check_speed speed
       case speed
-        when 19..10
+        when 2..2.5
           @tweets[:speed][:medium].sample
-        when 20..50 
+        when 2.6..10 
           @tweets[:speed][:fast].sample
         else
           @tweets[:speed][:slow].sample
@@ -94,7 +94,7 @@ module TweetWheel
 
     def check_distance distance
       case distance
-        when 2..1 
+        when 1..2 
           @tweets[:distance][:medium].sample
         when 3..5
           @tweets[:distance][:long].sample
