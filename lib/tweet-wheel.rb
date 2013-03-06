@@ -19,8 +19,8 @@ MAX_REED_COUNT  = 150       # Max counts before timeout
 CIRCUMFERENCE   = 34.54     # Circumference of the wheel in inches
 
 # Remember, the little critter likes to take breaks. Adjust this
-# amount in order to get a full wheel session. 
-MAX_WAIT_TIME   = 7200 
+# amount in order to get a full wheel session (in seconds).
+MAX_WAIT_TIME   = 10800 
 
 # Initializing basic operating settings.
 @reed_counter   = MAX_REED_COUNT
@@ -34,15 +34,11 @@ MAX_WAIT_TIME   = 7200
 board           = Dino::Board.new(Dino::TxRx.new)
 sensor          = Dino::Components::Sensor.new(pin: 'A0', board: board)
 
-# Set up wheel.log
-@logger = Logger.new("wheel.log")
-
 
 # Let's print an awesome welcome message
 puts "+---------------------------------------+"
 puts "|      Chauncey's Wheel is running      |"
 puts "+---------------------------------------+"
-@logger.info "Chauncey's Wheel loaded"
 
 # 
 # The Arduino loop and main logic
@@ -71,7 +67,6 @@ on_data = Proc.new do |data|
       @start_time = Time.now if @tweet_sent
       @tweet_sent = false
 
-      @logger.info "#{mph.round} MPH, rotation: #{@elapsed_time}s, distance: #{@distance}"
       puts "#{mph.round} MPH, rotation: #{@elapsed_time}s, distance: #{@distance}"
     else
       if @reed_counter > 0
@@ -115,9 +110,6 @@ def end_wheel_session
   # Of course, record the total duration
   duration = ((Time.now - @start_time) / 60).round
 
-  @logger.info "Session ended"
-  @logger.info "AVG MPH: #{avg_mph}, DISTANCE: #{final_distance}, DURATION: #{duration}"
-
   puts "AVG MPH: #{avg_mph}, DISTANCE: #{final_distance}, DURATION: #{duration}"
   
   # Flag that tweet was sent to stop subsequent tweet sends.
@@ -125,16 +117,14 @@ def end_wheel_session
 
   begin 
     tweet.send_tweet({ current_time: Time.now, 
-                       duration: duration, 
+                       # duration: duration, 
                        speed: avg_mph, 
                        distance: final_distance 
                       })
 
-    @logger.info "Tweet sent!"
     puts "Tweet sent!"
   
   rescue Exception => msg
-    @logger.warn "Tweet failed | #{msg}"
     puts "Tweet failed | #{msg}"
   end
   

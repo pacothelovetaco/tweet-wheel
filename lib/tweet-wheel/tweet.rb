@@ -17,10 +17,10 @@ module TweetWheel
     
     def initialize
       @client = Twitter::Client.new(
-        :consumer_key => "sUySqvvF4xQF7F0vx1g2uA",
-        :consumer_secret => "lf6wJGz9da1BXPuLCxT3st5TqcN25jSNaG7cglq9Q",
-        :oauth_token => "1067037691-qc4cf7zJwsEGQ0qaRhmyvioE50Hf9Kp6MBmIDxz",
-        :oauth_token_secret => "ldHzdF7tFA0eSiAVfVWAgQ2fswjMU2j76LHkgMYFPuU"
+        :consumer_key => "",
+        :consumer_secret => "",
+        :oauth_token => "",
+        :oauth_token_secret => ""
         )
       @tweets = YAML.load_file("tweets.yml")
     end
@@ -37,7 +37,7 @@ module TweetWheel
       random_tweet << check_time(current_time)
 
       # Duration
-      random_tweet << check_duration(duration)
+      #random_tweet << check_duration(duration)
 
       # Distance
       random_tweet << check_distance(distance)
@@ -47,7 +47,7 @@ module TweetWheel
 
       tweet = random_tweet.sample
       formatted_tweet = subber({ tweet: tweet,
-                                 duration: duration,
+                                 #duration: duration,
                                  speed: speed,
                                  distance: distance
                                 })
