@@ -6,7 +6,6 @@
 
 require "tweet-wheel/version"
 require "tweet-wheel/tweet"
-require 'logger'
 require 'dino' # https://github.com/austinbv/dino
   
 # 

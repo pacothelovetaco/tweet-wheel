@@ -1,7 +1,7 @@
 # Hamster Tweet Wheel
-I have a hamster. He's a cute little critter. He's clean, quiet, and low maintence. However, he is very active. The little guy spends hours in his wheel going around and around and .... As I watched him going around in that wheel, my wheels started spinning too. I wanted to harness that activity somehow. So I decided to rig his wheel with a sensor to track is activity. But that's a little boring on it's own. So since he is a hamster living in the 21st century, I also decided that he should be able to tweet his little adventures as well.
+I have a hamster. He's a cute little critter. He's clean, quiet, and low maintence. However, he is very active. The little guy spends hours in his wheel going around and around and .... As I watched him going around in that wheel, my wheels started spinning too. I wanted to harness that activity somehow. So I decided to rig his wheel with a sensor and track his activity. But that's a little boring on it's own. So since he is a hamster living in the 21st century, I also decided that he should be able to tweet his little adventures as well.
 
-The Hamster Tweet Wheel monitors the hamster's activity in his wheel. It tracks distance, speed, and time of day. It then sends a random Tweet based on the data collected during his run in the wheel. See it in action [here!](https://twitter.com/ChaunceyHamster)
+The Hamster Tweet Wheel monitors the hamster's activity in his wheel. It tracks distance, speed, and time of day. It then sends a random tweet based on the data collected during his run in the wheel. See it in action [here!](https://twitter.com/ChaunceyHamster)
 
 
 ##Hardware
@@ -33,9 +33,8 @@ Lastly, fasten the connected end of the magnetic door switch to cage, and the ot
 			)
 
 2. Edit `tweet-wheel.rb`:
-	
-		- Replace the constant `CIRCUMFERENCE` with the actual circumference of your hamster wheel in inches.
-		- Replace `MAX_WAIT_TIME` with the wait time you prefer. To send more tweets set the time lower, or set it higher to send more tweets. 
+  - Replace the constant `CIRCUMFERENCE` with the actual circumference of your hamster wheel in inches.
+  - Replace `MAX_WAIT_TIME` with the wait time you prefer. To send more tweets set the time lower, or set it higher to send more tweets. 
 
 
 3. Add or remove tweets in `tweets.yml`.
