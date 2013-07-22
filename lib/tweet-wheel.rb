@@ -117,7 +117,7 @@ def end_wheel_session
 
   begin 
     tweet.send_tweet({ current_time: Time.now, 
-                       # duration: duration, 
+                       duration: duration, 
                        speed: avg_mph, 
                        distance: final_distance 
                       })

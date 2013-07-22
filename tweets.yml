@@ -9,9 +9,10 @@
     - "I smell something."
     - "I wish I had some popcorn http://bit.ly/4YDM5"
     - "You're watching The Fast & The Furriest!"
+    - "Dance the night away http://bit.ly/9WeyK4"
   :afternoon:
     - "Why am I up this early? The sun is still up?"
-    - "Is everybody at work? I can't see anyone through the cage."
+    - "Is everybody at work? I don't see anyone through the bars."
     - "Do you ever wonder if the world is bigger than what you can see?"
     - "One of these days, I'm breaking out of this place."
     - "Don't tell anyone, but I'm planning an escape."
@@ -22,7 +23,7 @@
     - "I hate it when the urge to pee wakes you up in the morning."
     - "mmm...I love water."
     - "Hunger pains."
-    - "Gosh, my owners are so noisy"
+    - "Gosh, my owners are so noisy!"
 
 :duration:
   :long:
@@ -75,12 +76,14 @@
   :fast: 
     - "Can you catch me? Nobody can catch me: SPEED MPH"
     - "Did you see me? I ran so fast that I was a blur!"
-    - "I just had a SPEED MPH run"
+    - "I just had a SPEED MPH run."
+    - "I must maintain this furry figure."
   :medium:
-    - "Taking it easy tonight. Only SPEED MPH tonight"
+    - "Taking it easy tonight. Only SPEED MPH tonight."
     - "My legs are still sore from my last run."
-    - "I just had a SPEED MPH run"
+    - "I just had a SPEED MPH run."
   :slow: 
     - "A carrot and a couch for me tonight."
     - "I shouldn't have eaten that extra cheese treat."
-    - "I just had a SPEED MPH run"
+    - "I just had a SPEED MPH run."
+    - "Another light jog to warm the muscles."
